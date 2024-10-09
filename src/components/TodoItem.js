@@ -70,8 +70,8 @@ function TodoItem({ todo, onDelete, onEdit, onTodoFinished, isDetail }) {
           {!isDetail ? (
             <div className="d-flex">
               <div className="text-end">
-      
-              <button
+                
+                <button
                   onClick={() => {
                     // eslint-disable-next-line no-undef
                     Swal.fire({
