@@ -2,7 +2,7 @@ import React from "react";
 import TabsItem from "./TabsItem";
 import PropTypes from "prop-types";
 
-function TodoList({ todos, onDelete, onTodoFinished, keywordSearch }) {
+function TodoList({ todos, onDelete, onEdit, onTodoFinished, keywordSearch }) {
   let todosNotFinished = todos.filter((todo) => !todo.is_finished);
   let todosFinished = todos.filter((todo) => todo.is_finished);
 
@@ -72,6 +72,7 @@ function TodoList({ todos, onDelete, onTodoFinished, keywordSearch }) {
             isActive={true}
             todos={todosNotFinished}
             onDelete={onDelete}
+            onEdit={onEdit}
             onTodoFinished={onTodoFinished}
           ></TabsItem>
 
@@ -81,6 +82,7 @@ function TodoList({ todos, onDelete, onTodoFinished, keywordSearch }) {
             isActive={false}
             todos={todosFinished}
             onDelete={onDelete}
+            onEdit={onEdit}
             onTodoFinished={onTodoFinished}
           ></TabsItem>
         </div>
@@ -92,6 +94,7 @@ function TodoList({ todos, onDelete, onTodoFinished, keywordSearch }) {
 TodoList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.object).isRequired,
   onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
   onTodoFinished: PropTypes.func.isRequired,
   keywordSearch: PropTypes.string.isRequired,
 };

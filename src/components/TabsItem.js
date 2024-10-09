@@ -2,7 +2,15 @@ import React from "react";
 import TodoItem from "./TodoItem";
 import PropTypes from "prop-types";
 
-function TabsItem({ tabId, title, isActive, todos, onDelete, onTodoFinished }) {
+function TabsItem({
+  tabId,
+  title,
+  isActive,
+  todos,
+  onDelete,
+  onEdit,
+  onTodoFinished,
+}) {
   let itemDisplay;
   if (todos.length > 0) {
     itemDisplay = (
@@ -12,6 +20,7 @@ function TabsItem({ tabId, title, isActive, todos, onDelete, onTodoFinished }) {
             todo={todo}
             key={todo.id}
             onDelete={onDelete}
+            onEdit={onEdit}
             onTodoFinished={onTodoFinished}
             isDetail={false}
           />
@@ -40,6 +49,7 @@ TabsItem.propTypes = {
   isActive: PropTypes.bool.isRequired,
   todos: PropTypes.arrayOf(PropTypes.object).isRequired,
   onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
   onTodoFinished: PropTypes.func.isRequired,
 };
 export default TabsItem;
