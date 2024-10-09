@@ -20,6 +20,19 @@ class HomePage extends React.Component {
 
     this.onTodoFinished = this.onTodoFinished.bind(this);
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
+    this.onEditHandler = this.onEditHandler.bind(this);
+  }
+
+  onEditHandler({ id, title, description, is_finished }) {
+    editTodo({
+      id,
+      title,
+      description,
+      is_finished,
+    });
+    this.setState({
+      todos: getAllTodo(), // Update todos from the data source
+    });
   }
 
   onDeleteHandler(id) {
@@ -70,6 +83,7 @@ class HomePage extends React.Component {
           <TodoList
             todos={this.state.todos}
             onDelete={this.onDeleteHandler}
+            onEdit={this.onDeleteHandler}
             onTodoFinished={this.onTodoFinished}
             keywordSearch={this.props.keyword}
           ></TodoList>
