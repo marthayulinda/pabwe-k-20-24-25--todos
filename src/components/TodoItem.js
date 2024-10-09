@@ -4,7 +4,7 @@ import { formatDate } from "../utils/tools";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-function TodoItem({ todo, onDelete, onTodoFinished, isDetail }) {
+function TodoItem({ todo, onDelete, onEdit, onTodoFinished, isDetail }) {
   let buttonAction;
   if (!todo.is_finished) {
     buttonAction = (
@@ -76,8 +76,15 @@ function TodoItem({ todo, onDelete, onTodoFinished, isDetail }) {
                     // eslint-disable-next-line no-undef
                     Swal.fire({
                       title: "Edit Todo",
-                      // eslint-disable-next-line quotes
-                      text: `Apakah kamu yakin ingin mengedit todo: ${todo.title}?`,
+                      html:
+                        '<label for="title" class="form-label">Title:</label>' +
+                        '<input id="title" class="swal2-input" placeholder="Enter new title" value="' +
+                        todo.title +
+                        '">' + // Set the initial value
+                        '<label for="description" class="form-label mt-3">Description:</label>' +
+                        '<textarea id="description" class="swal2-textarea" placeholder="Enter new description">' +
+                        todo.description +
+                        "</textarea>", // Set the initial value
                       icon: "warning",
                       showCancelButton: true,
                       confirmButtonText: "Edit",
@@ -86,17 +93,38 @@ function TodoItem({ todo, onDelete, onTodoFinished, isDetail }) {
                         cancelButton: "btn btn-secondary mb-4",
                       },
                       buttonsStyling: false,
+                      preConfirm: () => {
+                        const title =
+                          // eslint-disable-next-line no-undef
+                          Swal.getPopup().querySelector("#title").value;
+                        const description =
+                          // eslint-disable-next-line no-undef
+                          Swal.getPopup().querySelector("#description").value;
+                        if (!title || !description) {
+                          // eslint-disable-next-line no-undef
+                          Swal.showValidationMessage(
+                            "Both fields are required."
+                          );
+                        }
+                        return { title, description };
+                      },
                     }).then((result) => {
                       if (result.isConfirmed) {
-                        // eslint-disable-next-line no-undef
-                        onDelete(todo.id);
+                        const { title, description } = result.value;
+                        onEdit({
+                          // Call onEdit from props
+                          id: todo.id,
+                          title: title,
+                          description: description,
+                          is_finished: todo.is_finished, // Keep existing `is_finished` value
+                        });
                       }
                     });
                   }}
-                  className="btn btn-danger me-3"
+                  className="btn btn-warning me-3"
                 >
                   <Icon.Edit />
-                </button> 
+                </button>
 
                 <button
                   onClick={() => {
@@ -144,6 +172,7 @@ TodoItem.propTypes = {
     updated_at: PropTypes.string.isRequired,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
   onTodoFinished: PropTypes.func.isRequired,
   isDetail: PropTypes.bool.isRequired,
 };
